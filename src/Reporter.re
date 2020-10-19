@@ -4,7 +4,9 @@ type t = Logs.reporter;
 
 external prerr_native: string => unit = "timber_prerr_native";
 
-let console = (~enableColors=false, ()) => {
+let defaultColorsEnabled = Sys.win32 ? false : true;
+
+let console = (~enableColors=defaultColorsEnabled, ()) => {
   // We use `native_error` instead of `prerr` / default formatter to work around:
   // https://github.com/ocaml/ocaml/issues/9252
   let formatter = {
@@ -20,11 +22,7 @@ let console = (~enableColors=false, ()) => {
   };
 
   if (enableColors) {
-    if (Sys.win32) {
-      Fmt.set_style_renderer(formatter, `None);
-    } else {
       Fmt.set_style_renderer(formatter, `Ansi_tty);
-    };
   } else {
     Fmt.set_style_renderer(formatter, `None);
   };
