@@ -82,29 +82,20 @@ module Log = {
 };
 
 module App = {
-  let isEnabled = Reporter.isEnabled;
   let isLevelEnabled = Level.isEnabled;
   let isNamespaceEnabled = Namespace.isEnabled;
 
-  let enable = () => Reporter.(set(all));
+  let enable = reporter => Reporter.(set(reporter));
   let disable = () => Reporter.(set(none));
 
-  let disableColors = Reporter.Console.disableColors;
   let setLevel = Level.set;
-  let setLogFile = Reporter.File.setLogFile;
   let setNamespaceFilter = Namespace.setFilter;
 };
 
-// init
-let () =
-  if (Sys.win32) {
-    Reporter.Console.init(~style_renderer=`None);
-  } else {
-    Reporter.Console.init(~style_renderer=`Ansi_tty);
-  };
-
 // default to only log messages at log level Info and above
 Level.set(Level.info);
+
+module Reporter = Reporter;
 
 module Testing = {
   let setTimeFn = DeltaTime.setTimeFn;

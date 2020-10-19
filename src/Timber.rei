@@ -30,19 +30,25 @@ module Log: {
   let perf: (string, unit => 'a) => 'a;
 };
 
+module Reporter: {
+  type t;
+
+  let none: t;
+  let console: (~enableColors: bool=?, unit) => t;
+  let file: (~truncate: bool=?, string) => t;
+
+  let combine: (t, t) => t;
+};
+
 module App: {
   // These function should only be used by the application, not libraries
-
-  let isEnabled: unit => bool;
   let isLevelEnabled: Level.t => bool;
   let isNamespaceEnabled: string => bool;
 
-  let enable: unit => unit;
+  let enable: Reporter.t => unit;
   let disable: unit => unit;
 
   let setLevel: Level.t => unit;
-  let setLogFile: (~truncate: bool=?, string) => unit;
-  let disableColors: unit => unit;
 
   /**
    * setNamespaceFilter(filters)

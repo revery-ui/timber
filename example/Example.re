@@ -1,6 +1,8 @@
-Timber.App.enable();
+let fileReporter = Timber.Reporter.file("test.log");
+let consoleReporter = Timber.Reporter.console(~enableColors=true, ());
+let reporter = Timber.Reporter.combine(fileReporter, consoleReporter);
+Timber.App.enable(reporter);
 Timber.App.setLevel(Timber.Level.trace);
-Timber.App.setLogFile("test.log");
 
 {
   module Log = (val Timber.Log.withNamespace("Timber"));
