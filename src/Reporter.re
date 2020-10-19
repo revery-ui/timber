@@ -22,7 +22,7 @@ let console = (~enableColors=defaultColorsEnabled, ()) => {
   };
 
   if (enableColors) {
-      Fmt.set_style_renderer(formatter, `Ansi_tty);
+    Fmt.set_style_renderer(formatter, `Ansi_tty);
   } else {
     Fmt.set_style_renderer(formatter, `None);
   };
